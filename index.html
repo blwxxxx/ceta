@@ -33,18 +33,19 @@
         }
 
         /* 네비게이션 */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: rgba(245, 241, 232, 0.95);
-            padding: 25px 50px;
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(245, 241, 232, 0.95);
+    padding: 25px 50px;
+    display: flex;
+    justify-content: flex-end; /* 우측 정렬로 변경 */
+    align-items: center;
+    gap: 30px; /* 60px에서 30px로 반으로 줄임 */
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
 
         nav a {
             text-decoration: none;
@@ -74,21 +75,24 @@
             margin-bottom: 60px;
         }
 
-        h1 {
-            font-size: 70pt;
-            font-weight: 300;
-            letter-spacing: 8px;
-            color: #3d5a3d;
-            margin-bottom: 10px;
-        }
+     h1 {
+    font-size: 70pt;
+    font-weight: 200;
+    letter-spacing: 15px; /* 자간 늘림 */
+    color: #3d5a3d;
+    margin-bottom: 10px;
+    font-family: 'Futura', 'Century Gothic', 'Arial Narrow', sans-serif; /* 폰트 변경 */
+    text-transform: uppercase; /* 대문자로 */
+}
 
-        .subtitle {
-            font-size: 30pt;
-            font-weight: 200;
-            letter-spacing: 4px;
-            color: #7a9a7a;
-            opacity: 0.8;
-        }
+   .subtitle {
+    font-size: 20pt; /* 10pt 줄임 */
+    font-weight: 200;
+    letter-spacing: 1px; /* 자간 좁힘 */
+    color: #7a9a7a;
+    opacity: 0.8;
+    transform: scaleX(0.85); /* 가로 폭 좁힘 */
+}
 
         .hero-image-container {
             width: 80%;
@@ -128,12 +132,13 @@
             display: block;
         }
 
-        .about-content {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 60px;
-            margin-bottom: 60px;
-        }
+.about-content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+    align-items: start; /* 이 줄 추가 */
+}
 
         .profile-image {
             width: 300px;
@@ -374,6 +379,27 @@
                 }
             });
             window.scrollTo(0, 0);
+        }
+    </script>
+    <!-- 이미지 모달 추가 -->
+    <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center;" onclick="closeModal()">
+        <img id="modalImage" style="max-width: 90%; max-height: 90%; object-fit: contain;">
+        <span style="position: absolute; top: 30px; right: 50px; color: #fff; font-size: 40px; cursor: none;">&times;</span>
+    </div>
+
+    <script>
+        // 기존 스크립트 아래에 추가
+        
+        // 갤러리 이미지 클릭 이벤트
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                document.getElementById('modalImage').src = img.src;
+                document.getElementById('imageModal').style.display = 'flex';
+            });
+        });
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
         }
     </script>
 </body>
