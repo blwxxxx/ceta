@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cetaphil - Photographer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f1e8;
+            color: #2d3e2d;
+            overflow-x: hidden;
+        }
+
+        /* 커스텀 커서 */
+        #cursor {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #c0c0c0;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease;
+            background-color: rgba(192, 192, 192, 0.3);
+        }
+
+        /* 네비게이션 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(245, 241, 232, 0.95);
+            padding: 25px 50px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #5a7a5a;
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #2d3e2d;
+        }
+
+        /* 홈 섹션 */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 80px;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 70pt;
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: #3d5a3d;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 30pt;
+            font-weight: 200;
+            letter-spacing: 4px;
+            color: #7a9a7a;
+            opacity: 0.8;
+        }
+
+        .hero-image-container {
+            width: 80%;
+            max-width: 1200px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: revealImage 2s ease-out forwards;
+        }
+
+        @keyframes revealImage {
+            from {
+                clip-path: inset(0 0 100% 0);
+            }
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        /* 작가 소개 섹션 */
+        #about {
+            display: none;
+            min-height: 100vh;
+            padding: 120px 50px 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        #about.active {
+            display: block;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .profile-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .profile-info h2 {
+            font-size: 36px;
+            color: #3d5a3d;
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .profile-info h3 {
+            font-size: 20px;
+            color: #5a7a5a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .profile-info p {
+            line-height: 1.8;
+            color: #4a5a4a;
+            margin-bottom: 15px;
+        }
+
+        .exhibitions {
+            margin-top: 40px;
+        }
+
+        .exhibitions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .exhibitions li {
+            padding: 10px 0;
+            color: #4a5a4a;
+            border-bottom: 1px solid #d5cfc0;
+        }
+
+        /* 포트폴리오 섹션 */
+        #portfolio {
+            display: none;
+            min-height: 100vh;
+            padding: 120px 50px 50px;
+        }
+
+        #portfolio.active {
+            display: block;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .gallery-caption .title {
+            font-size: 16px;
+            color: #3d5a3d;
+            font-weight: 400;
+        }
+
+        .gallery-caption .year {
+            font-size: 14px;
+            color: #7a9a7a;
+            margin-top: 5px;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40pt;
+            }
+            .subtitle {
+                font-size: 20pt;
+            }
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor"></div>
+
+    <nav>
+        <a href="#" onclick="showSection('home')">HOME</a>
+        <a href="#" onclick="showSection('about')">작가 소개</a>
+        <a href="#" onclick="showSection('portfolio')">포트폴리오</a>
+    </nav>
+
+    <!-- 홈 섹션 -->
+    <section id="home">
+        <div class="title-container">
+            <h1>cetaphil</h1>
+            <p class="subtitle">PHOTOGRAPHER</p>
+        </div>
+        <div class="hero-image-container">
+            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1200" alt="Hero Image" class="hero-image">
+        </div>
+    </section>
+
+    <!-- 작가 소개 섹션 -->
+    <section id="about">
+        <div class="about-content">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300" alt="Profile" class="profile-image">
+            <div class="profile-info">
+                <h2>cetaphil</h2>
+                <h3>소개</h3>
+                <p>빛과 그림자 사이의 순간을 포착하는 사진작가입니다. 일상 속 작은 아름다움을 발견하고, 그것을 프레임 안에 담아내는 작업을 하고 있습니다.</p>
+                
+                <h3>연락처</h3>
+                <p>Email: cetaphil@example.com</p>
+                <p>Instagram: @cetaphil_photo</p>
+                
+                <div class="exhibitions">
+                    <h3>전시 경력</h3>
+                    <ul>
+                        <li>2024 - "찰나의 순간" 개인전, 서울</li>
+                        <li>2023 - "빛의 언어" 그룹전, 부산</li>
+                        <li>2022 - "도시의 숨결" 개인전, 제주</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 포트폴리오 섹션 -->
+    <section id="portfolio">
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600" alt="Work 1">
+                <div class="gallery-caption">
+                    <div class="title">고요한 아침</div>
+                    <div class="year">2024</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600" alt="Work 2">
+                <div class="gallery-caption">
+                    <div class="title">산의 기억</div>
+                    <div class="year">2024</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600" alt="Work 3">
+                <div class="gallery-caption">
+                    <div class="title">물의 흐름</div>
+                    <div class="year">2023</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600" alt="Work 4">
+                <div class="gallery-caption">
+                    <div class="title">숲 속의 빛</div>
+                    <div class="year">2023</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600" alt="Work 5">
+                <div class="gallery-caption">
+                    <div class="title">저녁 노을</div>
+                    <div class="year">2023</div>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600" alt="Work 6">
+                <div class="gallery-caption">
+                    <div class="title">호수의 반영</div>
+                    <div class="year">2022</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 커스텀 커서
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 15 + 'px';
+            cursor.style.top = e.clientY - 15 + 'px';
+        });
+
+        // 섹션 전환
+        function showSection(sectionName) {
+            const sections = ['home', 'about', 'portfolio'];
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (section === sectionName) {
+                    element.style.display = section === 'home' ? 'flex' : 'block';
+                    if (section !== 'home') {
+                        element.classList.add('active');
+                    }
+                } else {
+                    element.style.display = 'none';
+                    if (section !== 'home') {
+                        element.classList.remove('active');
+                    }
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
